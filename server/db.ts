@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, listings, InsertListing, rentals, InsertRental, tokenTransactions, InsertTokenTransaction } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +89,73 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// Listings queries
+export async function createListing(data: InsertListing) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(listings).values(data);
+  return result;
+}
+
+export async function getListingById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(listings).where(eq(listings.id, id)).limit(1);
+  return result[0];
+}
+
+export async function getListingsByUser(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(listings).where(eq(listings.userId, userId));
+}
+
+export async function searchListings(filters: { category?: string; zipCode?: string; minPrice?: number; maxPrice?: number; isEmergency?: boolean; isWeird?: boolean }) {
+  const db = await getDb();
+  if (!db) return [];
+  let query: any = db.select().from(listings).where(eq(listings.availability, 'available'));
+  if (filters.category) query = query.where(eq(listings.category, filters.category));
+  if (filters.zipCode) query = query.where(eq(listings.zipCode, filters.zipCode));
+  if (filters.isEmergency) query = query.where(eq(listings.isEmergency, true));
+  if (filters.isWeird) query = query.where(eq(listings.isWeird, true));
+  return query.limit(100);
+}
+
+export async function updateListing(id: number, data: Partial<InsertListing>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.update(listings).set(data).where(eq(listings.id, id));
+}
+
+// Rentals queries
+export async function createRental(data: InsertRental) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.insert(rentals).values(data);
+}
+
+export async function getRentalsByUser(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(rentals).where(eq(rentals.renterId, userId));
+}
+
+// Token queries
+export async function addTokenTransaction(data: InsertTokenTransaction) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.insert(tokenTransactions).values(data);
+}
+
+export async function getUserTokenBalance(userId: number) {
+  const db = await getDb();
+  if (!db) return 0;
+  const user = await db.select({ tokenBalance: users.tokenBalance }).from(users).where(eq(users.id, userId)).limit(1);
+  return user[0]?.tokenBalance ?? 0;
+}
+
+export async function updateUserTokenBalance(userId: number, newBalance: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.update(users).set({ tokenBalance: newBalance }).where(eq(users.id, userId));
+}

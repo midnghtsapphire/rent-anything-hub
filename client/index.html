@@ -1,70 +1,73 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Rentable — Rent the Unrentable | Peer-to-Peer Rental Marketplace</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Rent anything from your neighbors. Emotional support goats, haunted mirrors, astronaut suits. Fair prices, CO₂ tracked, barter enabled. The sharing economy that actually works." />
-    <meta name="keywords" content="rental marketplace, peer-to-peer rentals, sharing economy, rent items, fair pricing, emergency rentals" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rentable — Rent the Unrentable</title>
+    <meta name="description" content="The world's most interesting rental marketplace. Rent generators, goats, astronaut suits, haunted mirrors, and everything in between. AI-powered fair pricing, CO₂ tracking, barter system." />
+    <meta name="keywords" content="rental marketplace, rent anything, peer to peer rental, sharing economy, emergency rentals, weird rentals, barter, CO2 tracking" />
     <meta name="author" content="Rentable" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://rent-anything-hub.manus.space/" />
-    
-    <!-- Open Graph Tags -->
+    <meta name="theme-color" content="#0d1117" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Rentable — Rent the Unrentable" />
-    <meta property="og:description" content="Rent anything from your neighbors. Fair prices, CO₂ tracked, barter enabled." />
-    <meta property="og:url" content="https://rent-anything-hub.manus.space/" />
     <meta property="og:site_name" content="Rentable" />
-    <meta property="og:image" content="https://rent-anything-hub.manus.space/og-image.png" />
+    <meta property="og:title" content="Rentable — Rent the Unrentable" />
+    <meta property="og:description" content="The world's most interesting rental marketplace. AI-powered fair pricing, CO₂ tracking, barter system, and the Weird Vault." />
+    <meta property="og:url" content="https://rentable.manus.space" />
+    <meta property="og:image" content="/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    
-    <!-- Twitter Card Tags -->
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Rentable — Rent the Unrentable" />
-    <meta name="twitter:description" content="Rent anything from your neighbors. Fair prices, CO₂ tracked, barter enabled." />
-    <meta name="twitter:image" content="https://rent-anything-hub.manus.space/og-image.png" />
-    
-    <!-- Structured Data (JSON-LD) -->
+    <meta name="twitter:description" content="Rent generators, goats, astronaut suits & more. AI pricing, CO₂ tracking, barter system." />
+    <meta name="twitter:image" content="/og-image.png" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Rentable",
-      "description": "Rent anything from your neighbors. Fair prices, CO₂ tracked, barter enabled.",
-      "url": "https://rent-anything-hub.manus.space/",
+      "alternateName": "Rent the Unrentable",
+      "url": "https://rentable.manus.space",
+      "description": "The world's most interesting rental marketplace with AI-powered fair pricing and CO₂ tracking",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://rent-anything-hub.manus.space/search?q={search_term_string}",
+        "target": "https://rentable.manus.space/search?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }
     </script>
-    
-    <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#1e293b" />
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Rentable",
+      "url": "https://rentable.manus.space",
+      "description": "Peer-to-peer rental marketplace with AI pricing, CO₂ tracking, and barter system",
+      "foundingDate": "2024",
+      "sameAs": ["https://github.com/MIDNGHTSAPPHIRE/rent-anything-hub"]
+    }
+    </script>
   </head>
-
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script
-      defer
-      src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
   </body>
-
 </html>

@@ -7,6 +7,12 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Emergency from "./pages/Emergency";
+import ListingDetail from "./pages/ListingDetail";
+import ListItem from "./pages/ListItem";
+import Profile from "./pages/Profile";
+import Admin from "./pages/Admin";
+import Support from "./pages/Support";
+import Pricing from "./pages/Pricing";
 
 function Router() {
   return (
@@ -14,6 +20,12 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/search" component={Search} />
       <Route path="/emergency" component={Emergency} />
+      <Route path="/listing/:id" component={ListingDetail} />
+      <Route path="/list-item" component={ListItem} />
+      <Route path="/profile" component={Profile} />
+      <Route path="/admin" component={Admin} />
+      <Route path="/support" component={Support} />
+      <Route path="/pricing" component={Pricing} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
@@ -28,12 +40,9 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
+      <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
-          <Toaster />
+          <Toaster richColors position="top-right" />
           <Router />
         </TooltipProvider>
       </ThemeProvider>

@@ -1,0 +1,12 @@
+{
+  "name": "Rentable — Rent the Unrentable",
+  "short_name": "Rentable",
+  "description": "The world's most interesting rental marketplace",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#00d4aa",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

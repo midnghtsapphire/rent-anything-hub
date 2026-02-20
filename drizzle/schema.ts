@@ -62,6 +62,8 @@ export const listings = mysqlTable("listings", {
   specs: json("specs").$type<Record<string, string>>().notNull(),
   // CO2 tracking
   co2SavedPerRental: decimal("co2SavedPerRental", { precision: 8, scale: 2 }).default("0"),
+  condition: mysqlEnum("condition", ["like_new", "good", "fair", "poor"]).default("good").notNull(),
+  viewCount: int("viewCount").default(0).notNull(),
   // Moderation
   isFlagged: boolean("isFlagged").default(false).notNull(),
   flagReason: text("flagReason"),
@@ -72,6 +74,7 @@ export const listings = mysqlTable("listings", {
   emergencyIdx: index("idx_listings_emergency").on(table.isEmergency),
   availabilityIdx: index("idx_listings_availability").on(table.availability),
   userIdx: index("idx_listings_user").on(table.userId),
+  weirdIdx: index("idx_listings_weird").on(table.isWeird),
 }));
 
 export type Listing = typeof listings.$inferSelect;
@@ -89,6 +92,9 @@ export const rentals = mysqlTable("rentals", {
   status: mysqlEnum("status", ["pending", "confirmed", "in_progress", "completed", "canceled"]).default("pending").notNull(),
   paymentStatus: mysqlEnum("paymentStatus", ["pending", "paid", "refunded"]).default("pending").notNull(),
   stripePaymentIntentId: varchar("stripePaymentIntentId", { length: 255 }),
+  stripeCheckoutSessionId: varchar("stripeCheckoutSessionId", { length: 255 }),
+  meetupLocation: varchar("meetupLocation", { length: 255 }),
+  notes: text("notes"),
   // Damage/insurance
   damageReported: boolean("damageReported").default(false).notNull(),
   damageDescription: text("damageDescription"),
@@ -110,12 +116,15 @@ export const reviews = mysqlTable("reviews", {
   rentalId: int("rentalId").notNull(),
   fromUserId: int("fromUserId").notNull(),
   toUserId: int("toUserId").notNull(),
+  listingId: int("listingId").notNull(),
   rating: int("rating").notNull(), // 1-5
   comment: text("comment"),
+  reviewType: mysqlEnum("reviewType", ["renter_to_owner", "owner_to_renter"]).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (table) => ({
   rentalIdx: index("idx_reviews_rental").on(table.rentalId),
   toUserIdx: index("idx_reviews_toUser").on(table.toUserId),
+  listingIdx: index("idx_reviews_listing").on(table.listingId),
 }));
 
 export type Review = typeof reviews.$inferSelect;
@@ -128,7 +137,9 @@ export const barterOffers = mysqlTable("barterOffers", {
   fromUserId: int("fromUserId").notNull(),
   toUserId: int("toUserId").notNull(),
   offeredItemDescription: text("offeredItemDescription").notNull(),
+  offeredItemValue: decimal("offeredItemValue", { precision: 10, scale: 2 }),
   status: mysqlEnum("status", ["pending", "accepted", "rejected", "completed"]).default("pending").notNull(),
+  message: text("message"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 }, (table) => ({
@@ -185,6 +196,28 @@ export const circleMembers = mysqlTable("circleMembers", {
 
 export type CircleMember = typeof circleMembers.$inferSelect;
 export type InsertCircleMember = typeof circleMembers.$inferInsert;
+
+// Support Tickets table
+export const supportTickets = mysqlTable("supportTickets", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId"),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  subject: varchar("subject", { length: 255 }).notNull(),
+  message: text("message").notNull(),
+  category: mysqlEnum("category", ["general", "billing", "listing", "rental", "safety", "bug", "other"]).default("general").notNull(),
+  status: mysqlEnum("status", ["open", "in_progress", "resolved", "closed"]).default("open").notNull(),
+  priority: mysqlEnum("priority", ["low", "medium", "high", "urgent"]).default("medium").notNull(),
+  adminNotes: text("adminNotes"),
+  resolvedAt: timestamp("resolvedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  userIdx: index("idx_tickets_user").on(table.userId),
+  statusIdx: index("idx_tickets_status").on(table.status),
+}));
+export type SupportTicket = typeof supportTickets.$inferSelect;
+export type InsertSupportTicket = typeof supportTickets.$inferInsert;
 
 // Admin Settings table
 export const adminSettings = mysqlTable("adminSettings", {
